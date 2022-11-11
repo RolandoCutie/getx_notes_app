@@ -48,6 +48,9 @@ dev_dependencies:
   get: ^4.6.5
   get_storage: ^2.0.3
   equatable: ^2.0.5
+  flutter_easyloading: ^3.0.5
+  dependencies:
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

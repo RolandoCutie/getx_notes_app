@@ -69,7 +69,7 @@ class AddCard extends StatelessWidget {
                                           homeController.chipIndex.value ==
                                               index,
                                       onSelected: (bool selected) {
-                                        homeController.ChangeChipIndex(
+                                        homeController.changeChipIndex(
                                             selected ? index : 0);
                                       },
                                     );
@@ -110,7 +110,7 @@ class AddCard extends StatelessWidget {
                     ],
                   )));
           homeController.editCttrl.clear();
-          homeController.ChangeChipIndex(0);
+          homeController.changeChipIndex(0);
         },
         child: DottedBorder(
           color: Colors.grey[400]!,

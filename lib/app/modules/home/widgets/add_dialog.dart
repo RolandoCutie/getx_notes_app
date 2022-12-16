@@ -6,6 +6,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class AddDialog extends StatelessWidget {
   final homeCtrl = Get.find<HomeController>();
+  //TODO:THis callss is called whern we are going to add a new task
   AddDialog({Key? key}) : super(key: key);
 
   @override
@@ -34,8 +35,8 @@ class AddDialog extends StatelessWidget {
                               MaterialStateProperty.all(Colors.transparent)),
                       onPressed: () {
                         //TODO AQUI DEBEMOS LLAMAR AUN METODO EN EL CONTROLLER QUE SE ENCARGUE DE GUARDAR LOS DATOS
+                        
                         //VALIDANDO UN FORMULARIO
-
                         if (homeCtrl.formKeys.currentState!.validate()) {
                           //aqui valido si esta selecionada alguna de las tareas
                           if (homeCtrl.task.value == null) {

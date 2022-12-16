@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:getx_notes_app/app/data/modules/task.dart';
 import 'package:getx_notes_app/app/data/services/storage/repository.dart';
 import 'package:get/get.dart';
@@ -15,6 +16,8 @@ class HomeController extends GetxController {
   final editCttrl = TextEditingController();
   final deleting = false.obs;
   final task = Rx<Task?>(null);
+  final doingTodos = <dynamic>[].obs;
+  final doneTodos = <dynamic>[].obs;
 
   //Metodos
   @override
@@ -44,6 +47,20 @@ class HomeController extends GetxController {
     deleting.value = value;
   }
 
+  void changeTodos(List<dynamic> select) {
+    doingTodos.clear();
+    doneTodos.clear();
+    for (int i = 0; i < select.length; i++) {
+      var todo = select[i];
+      var status = todo['done'];
+      if (status) {
+        doneTodos.add(todo);
+      } else {
+        doingTodos.add(todo);
+      }
+    }
+  }
+
   bool addTask(Task task) {
     if (tasks.contains(task)) {
       return false;
@@ -56,6 +73,7 @@ class HomeController extends GetxController {
     tasks.remove(task);
   }
 
+  //esto es para seleccionar la task con la que se va a trabajar
   void changeTask(Task? select) {
     task.value = select;
   }
@@ -85,5 +103,51 @@ class HomeController extends GetxController {
 
   bool containeTodo(List todos, String task) {
     return todos.any((element) => element['title'] == task);
+  }
+
+  bool addTodo(String text) {
+    var todo = {'title': text, 'done': false};
+
+    //revisamos si el todo que vamos a a;adir esta en el listado de los doing si es asi no hacemo0s nada solo devoilvemos false
+    if (doingTodos
+        .any((element) => mapEquals<String, dynamic>(todo, element))) {
+      return false;
+    }
+    //revisamos si el doneTodo que vamos a a;adir esta en el listado de los donetodos si es asi no hacemo0s nada solo devoilvemos false
+    var doneTodo = {'title': text, 'done': true};
+    if (doneTodos
+        .any((element) => mapEquals<String, dynamic>(doneTodo, element))) {
+      return false;
+    } else {
+      doingTodos.add(todo);
+      return true;
+    }
+  }
+
+  void updateTodos() {
+    var newTodos = <Map<String, dynamic>>[];
+    newTodos.addAll([
+      ...doingTodos,
+      ...doneTodos,
+    ]);
+
+    var newTask = task.value!.copyWith(todos: newTodos);
+    int oldIndx = tasks.indexOf(task.value);
+    tasks[oldIndx] = newTask;
+    tasks.refresh();
+  }
+
+  void doneTodo(String title) {
+    var doingTodo = {'title': title, 'done': false};
+    int index = doingTodos.indexWhere(
+        (element) => mapEquals<String, dynamic>(doingTodo, element));
+
+    doingTodos.removeAt(index);
+
+    var doneTodo = {'title': title, 'done': true};
+    doneTodos.add(doneTodo);
+
+    doneTodos.refresh();
+    doingTodos.refresh();
   }
 }

@@ -55,9 +55,12 @@ class HomePage extends GetView<HomeController> {
           return Obx(() => FloatingActionButton(
                 backgroundColor: controller.deleting.value ? Colors.red : blue,
                 onPressed: () {
+                  //Here whe check if the are task
                   if (controller.tasks.isNotEmpty) {
+                    //in case that whe have a task
                     Get.to(() => AddDialog(), transition: Transition.downToUp);
                   } else {
+                    //wwe show a notifications to the user in casse that are not any task created
                     EasyLoading.showError(
                         'There are no task created. Please create your task');
                   }
